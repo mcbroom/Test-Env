@@ -9,3 +9,5 @@ Includes
 - tidyverse
 - agricolae
 - learnr
+- plotly
+- mvtnorm

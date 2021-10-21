@@ -5,3 +5,5 @@ dependencies:
   - r-tidyverse
   - r-agricolae
   - r-learnr
+  - r-plotly
+  - r-mvtnorm

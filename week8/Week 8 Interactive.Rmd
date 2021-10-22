@@ -1,0 +1,378 @@
+---
+title: "Lecture Notes Weeks 8 - Multiple Treatment Comparisons"
+output:
+  html_document:
+    code_folding: show
+    includes:
+    toc: yes
+    toc_depth: 5
+    toc_float:
+      collapsed: yes
+runtime: shiny_prerendered
+---
+<!-- Make output window wider for R output so it doesn't split at columns at end -->
+```{r set-options, echo=FALSE, cache=FALSE}
+options(width = 100)
+library(learnr)
+```
+
+<p style="text-align: center;"><font size="+2">James McBroom - September 2021 </font></p>
+<center><a href="mailto:j.mcbroom@griffith.edu.au"><img src="./pictures/pi.jpg" width = "30" height = "30" alt="pi"></a></center>
+
+<br><br>
+
+
+> # Outline:
+>
+> 1. ***Analysis Of Variance Continued***
+>
+>   - Multiple Comparisons of Treatment Means
+>
+>      - Introduction
+>      - The Protected (Extended) t test
+>      - Least Significant Differences - LSD
+>      - Worked ANOVA Examples
+>      - Optional: Other kinds of Multiple Treatment Comparisons (non-examinable). See Separate Document.
+>
+>
+> 2. ***Using R***
+>
+>  - See lecture notes in week 7.
+>
+>
+> **Accompanying Workshop - done in week 8 and 10**
+>
+>  - The analysis of variance process and multiple comparisons of means - when the ANOVA rejects $H_0$ 
+>
+> **Workshop for week 8**
+>
+>  - Based on lectures in week 7 and 8
+>
+> **Project Requirements for Week 8**
+>
+> - Nil.
+>
+
+# 1. Multiple Comparisons of Treatment Means
+
+## 1.1 Introduction
+
+In the ANOVA, the F-test is used to test the overall hypothesis of equality of all treatment
+means.
+
+If $H_0$ is false, i.e. some difference (or differences) do exist, interest lies in determining where
+the differences do occur; which treatment means are different.
+
+A number of tests exist for comparisons of multiple treatment means, the most common of
+which is the extended (or protected) t-test. Other tests in common usage include:
+
+- Tukey’s q
+
+- Student-Neuman-Keull’s Multiple Range Test
+
+- Scheffe’s Test
+
+- Bonferroni
+
+- Duncan’s Multiple Range Test
+
+## 1.2 The Protected (Extended) t-test
+
+The original t-test was designed to compare two treatment means. If this test is simply
+extended and used to carry out all possible pairwise comparisons between more than two
+treatments, spurious significance may be found simply because so many of the tests are done -
+each test may be at a prescribed level of significance related to its specific type I error
+probability, but over all the possible tests this probability of error (the experimentwise error)
+may be quite different.
+
+To overcome this problem a requirement is imposed that the F-test in the ANOVA must be
+significant before any t-tests are carried out. If the overall test for significance says that there
+are no significant differences then no further testing is carried out.
+The t-test with this conditioning on the outcome of the F-test is known as the Protected t-
+test.
+
+Even though significant differences may occur in pairwise t-testing, if the F-test in the
+ANOVA is not significant, the null hypothesis that all treatment means are equal must be
+accepted.
+
+Providing the F-test is significant, at least two treatment means will be detected as
+significantly different when the t-tests are done.
+
+The treatment means are considered in pairs and each pair is tested using the standard t-test.
+EXCEPT that: in applying each test, the standard deviation used is that obtained from the
+error mean square in the ANOVA.
+
+Similarly, the degrees of freedom appropriate for each individual t-test are the error degrees
+of freedom in the ANOVA.
+
+**IMPORTANT NOTE**
+
+Remember the extended t-test as described above must only be applied after a significant
+F-test has been found. This proviso gives a "protection" to the test to prevent the detection of 
+false significant differences which can arise simply by comparing the highest and lowest of a number of means.
+
+> ***Example Wing Thickness of Butterflies***
+>
+> In the week 8 notes the following ANOVA was given for the wing thickness of 
+butterfly species:
+>
+> 
+> | Source                         |  DF | Sums of Squares |   Mean Squares  | Variance Ratio |
+|--------------------------------|:---:|:---------------:|:---------------:|:--------------:|
+| Between Species | 2 |       16.7000       | 8.3500 |     17.822    |
+| Within Species      | 9 |      4.2167       | 0.4685 |                |
+| Total                          | 11 |   20.9167     |                 |                |
+>
+> On the basis of the $F$-test, the variance ratio of 17.822, we rejected the null hypothesis and
+concluded that the mean wing thicknesses of the 3 butterfly species were not all the same
+(p<0.05).
+>
+> The actual means were:
+>
+> | Species              |   1  |   2  |   3  |
+|----------------------|:----:|:----:|:----:|
+| Mean Wing Thickness  | 4.67 | 6.80 | 7.75 |
+| Number of Replicates |   3  |   5  |   4  |
+>
+> Since the F-test was significant in the ANOVA further pairwise t-testing on the 3 means to
+isolate the specific differences, will be valid.
+>
+> The general hypotheses will be:
+>
+> \begin{align*}
+H_0:& \mu_i = \mu_j \\
+H_1:& \mu_i \neq \mu_j
+\end{align*}
+>
+> where $\mu_i$ and $\mu_j$ are the population mean wing thicknesses for the two species being
+compared.
+>
+> The test statistic for each comparison will be 
+>
+> $$
+T = \frac{\bar{X}_i - \bar{X}_j}{s\sqrt{\frac{1}{n_i} + \frac{1}{n_j}}}
+$$
+>
+> where symbols are as defined in the notes on independent t- testing and $s = \sqrt{\text{EMS}}$ from the
+ANOVA table.
+>
+> Under $H_0$: $T \sim t_9$. From tables, $t_9(0.975) = 2.262$.
+>
+> Note that the degrees of freedom is always 9 in this example (error df from ANOVA) regardless of which pair
+of means is being tested.
+>
+> Thus for each pairwise test the critical region will be: $T < -2.262$ or $T > 2.262$ (alternatively, we can write these two regions as $|T| > 2.262$).
+>
+> **(i) Species 1 vs Species 2**
+>
+> $$
+T = \frac{4.67 - 6.80}{\sqrt{0.4685}\sqrt{\frac{1}{3} + \frac{1}{5}}} = \frac{-2.13}{0.6845\sqrt{0.5333}} = \frac{-2.13}{0.4999} = -4.261.
+$$
+>
+> The calculated $T$ lies in the critical region and thus we reject $H_0$ in favour of $H_1$. We conclude that the mean wing
+thicknesses of species 1 (4.67) and 2 (6.80) are significantly different ($p < 0.05$).
+>
+> **(ii) Species 1 vs Species 3**
+>
+> $$
+T = \frac{4.67 - 7.75}{\sqrt{0.4685}\sqrt{\frac{1}{3} + \frac{1}{4}}} = \frac{-3.08}{0.6845\sqrt{0.5833}} = \frac{-3.08}{0.5228} = -5.891.
+$$
+>
+> The calculated $T$ lies in the critical region and thus we reject $H_0$ in favour of $H_1$. We conclude that the mean wing
+thicknesses of species 1 (4.67) and 3 (7.75) are significantly different ($p < 0.05$).
+>
+> **(iii) Species 2 vs Species 3**
+>
+> $$
+T = \frac{6.80 - 7.75}{\sqrt{0.4685}\sqrt{\frac{1}{5} + \frac{1}{4}}} = \frac{-0.95}{0.6845\sqrt{0.4500}} = \frac{-0.95}{0.4592} = -2.069.
+$$
+>
+> The calculated $T$ does not lie in the critical region and thus we cannot reject $H_0$. We conclude that there is insufficient evidence in the data to suggest that the mean wing thicknesses of species 2 (6.80) and 3 (7.75) are significantly different ($p \geq 0.05$).
+>
+> The overall conclusion is that species 2 and 3 do not differ with respect to mean wing thickness. Species 1 butterflies have, on average, a mean wing thickness significantly less than that of butterflies of species 2 and 3 ($\alpha = 0.05$).
+
+
+
+
+
+
+
+
+## 1.3 Least Significant Differences - LSD
+
+When a number of pairwise $t$-tests are carried out following an ANOVA, much of each
+calculation is common to all tests. This is especially true if there are equal replicates for some
+of the treatments.
+
+The standard deviation, $s$, and the critical region are always the same as they use the ANOVA
+error results. In the case of equal replications for each treatment, the standard error of the difference
+between the two means will be the same for all pairs of comparisons:
+
+$$
+SE_{\bar{y}_i - \bar{y}_j} = s\sqrt{\frac{2}{n}}
+$$
+
+where $s = \sqrt{\text{EMS}}$ from the ANOVA and $n$ is the number of (equal) reps in each treatment.
+
+Instead of evaluating the test statistic for all possible treatment pairs, the test statistic formula
+can be rearranged to find the **smallest difference** that must exist between any two means for
+significance to be reached. (Note that this is similar to the approach taken to find a confidence interval).
+
+Using the traditional level of significance of 0.05, the critical value is: $t_{\nu}(0.025)$ (these comparisions are ***always*** two-tailed). Substituting this in the equation for the test statistic T, gives:
+
+$$
+T = \frac{|\bar{y}_i - \bar{y}_j|^{\text{LSD}}}{s\sqrt{\frac{1}{n_i} + \frac{1}{n_j}}} > t_{\nu}(0.025).
+$$
+
+Rearranging and solving for $|\bar{y}_i - \bar{y}_j|^{\text{LSD}}$ gives:
+
+$$
+|\bar{y}_i - \bar{y}_j|^{\text{LSD}} > t_{\nu}(0.025) \times s \times \sqrt{\frac{1}{n_i} + \frac{1}{n_j}}
+$$
+
+where $|\bar{y}_i - \bar{y}_j|^{\text{LSD}}$ is the difference that must exist between means $i$ and $j$ if the test statistic is to just
+reach significance; that is, for $T$ to be just larger than $t_v(0.025)$.
+
+When all treatments have the same number of replicates, say $n$, only one LSD needs to be
+found for all the pairwise comparisons. If the replicates differ a LSD value must be calculated
+for every pair of differing replicates (this situation is not considered in this course).
+
+The next step is to find all differences between the means and compare them with the relevant
+LSD.
+
+**Table of Mean Differences**
+
+The most efficient way of looking at the differences between the means is to construct a table
+of mean differences as follows:
+
+
+|                                              | Means Ranked in Ascending Order $\rightarrow$ |
+|-----------------------------------------------|-----------------------------------------------|
+| **Means Ranked in Descending Order $\downarrow$**| matrix of differences between treatment means |
+
+> **Example: Fuel Efficiency**
+>
+> An experiment was carried out to compare the fuel efficiency (measured as a percentage) of
+petrol engines using different fuels. Five fuel types were used, each replicated four times.
+>
+> The statistical hypotheses are:
+>
+> \begin{align*}
+H_0:& \mu_1 = \mu_2 = \mu_3 = \mu_4 = \mu_5 \\
+H_1:& \text{The mean fuel efficiencies are not the same for all five fuel types}
+\end{align*}
+>
+> where $\mu_i$ is the mean fuel efficiency of fuel type $i$.
+>
+> Analysis of the results gave the following ANOVA table which will be completed in lectures:
+>
+> | Source                         |  DF | Sums of Squares |   Mean Squares  | Variance Ratio |
+  |--------------------------------|:---:|:---------------:|:---------------:|:--------------:|
+  | Fuel Type                      |     |                 |     106.8       |     8.26       |
+  | Error                          |     |                 |               |              |
+  | Total                          |     |     621.15      |                 |                |
+>
+>
+> ***Means Table:***
+>
+> | Fuel Type           |   A  |   B  |   C  |   D  |   E  |
+|---------------------|:----:|:----:|:----:|:----:|:----:|
+| Mean Efficiency (%) | 93.0 | 84.3 | 64.3 | 92.6 | 88.4 |
+| $n_i$               |   4  |   4  |   4  |   4  |   4  |
+>
+> From the tables $F_{4,15}(0.95) = 3.06$.
+>
+> The VR of 8.26 lies in the critical (rejection) region thus we reject $H_0$. Therefore conclude that the five fuel
+types do not all produce the same efficiency  ($p < 0.05$).
+>
+> To determine which of the fuel types differ, t-testing can be carried out using the LSD.
+>
+> \begin{align*}
+\text{LSD}(5\%, 4, 4) &= t_{15}(0.975) \times s \times \sqrt{\frac{1}{4} + \frac{1}{4}} \\
+ &= 2.131 \times 3.596 \times 0.7071 \\
+ &= 5.419.
+\end{align*}
+>
+> Thus any pair of means that differs by at least 5.419 will be significantly different at the 0.05 significance level.
+> 
+> ***Table of Mean Differences:***
+>
+>
+> |                        | Fuel Type $\rightarrow$ | C| B    | E    | D    | A    |
+|------------------------|-------------------------|------|------|------|------|------|
+| **Fuel Type $\downarrow$** |                         | **64.3** | **84.3** | **88.4** | **92.6** |**93.0** |
+| **A**                      | **93.0**                   | 28.7 | 8.7  | 4.6  | 0.4  | 0    |
+| **D**                      | **92.6**                    | 28.3 | 8.3  | 4.2  | 0    |      |
+| **E**                      | **88.4**                    | 24.1 | 4.1  | 0    |      |      |
+| **B**                      | **84.3**                    | 24   | 0    |      |      |      |
+| **C**                      | **64.3**                    | 0    |      |      |      |      |
+>
+> The first entry in the table, 28.7, is the difference between the smallest mean (64.3 for fuel type C) and the largest mean (93.0 for fuel type A). Any difference value in the table greater than the caclulated LSD = 5.419 indicates a significant difference between those means at the 0.05 level of significance.
+>
+> A useful way of presenting the results is as follows:
+> 
+> Significant Differences: A > C, B * D > C, B * E > C * B > C * (where * indicates a 5% level of significance).
+>
+> The general symbols for other levels of significance are: 1% ** 0.1% ***
+>
+> **Conclusions**
+>
+> The mean efficiency of fuel type C is significantly lower than the mean efficiency of all the
+other fuel types (p < 0.05). Fuel types A and D have greater efficiency on average than do
+fuel types C and B (p < 0.05). Fuel types A, D and E appear to have the same efficiency on
+average (p > 0.05).
+
+**Example: Harvester Example Revisited**
+
+Do this by hand yourself, then check your results using R. 
+
+How close are the estimates of treatment means and the standard deviation to the values we started with - remember we assumed these values and then constructed (simulated) these data?
+
+```{r harvestdat, exercise = T}
+harvesting.system <- factor(rep(c("nil", "CS1", "CS2", "new"), each = 5))
+observations <- rep(55, 20)
+dat <- data.frame(harvesting.system, observations)
+dat$observations <- dat$observations + rnorm(20, mean = 0, sd = 10)
+sys.effect <- rep(c(35, 5, -5, -35), each = 5)
+dat$observations <- dat$observations + sys.effect
+dat
+```
+
+**Example: Growth Curves - Marine Birds**
+
+An ESC researcher is studying the growth rates of young marine birds on the Great Barrier Reef. The growth curve of these birds is known to be logistic in nature with a functional form as follows:   
+
+$$W  =  \frac{K}{1 + exp(-r(t - t_m))}$$,
+
+where:
+
+- $W$ is the weight in grams of the individual bird at time $t$ days;
+
+- $K$  is the asymptotic weight of the individual bird (its adult weight);
+
+- $r$  is the growth constant for the individual bird; 
+
+- $t$  is the time from birth in days; 
+
+- $t_m$ is the time in days to reach a weight of $K/2$ grams.  
+
+It is believed that different species have different growth patterns which are reflected in different values for the coefficients, $K$, $r$ and $t_m$.  The growth curves of six individual birds from each of three species were studied.  The breeds involved and the resulting coefficients are given below. 
+
+| Bridled |Tern   |        | Black | Noddy       |             | Crested |Tern       |   |
+|---------|-------|--------|-------|--------|--------|---------|------------|--------|
+| $K$     | $t_m$ | $R$    |  $K$  |  $t_m$ |  $R$   |  $K$    |  $t_m$     |  $R$   |
+| 105.0   | 9.7   | 0.1594 | 96.4  | 8.3    | 0.2171 | 280.4   | 12.8       | 0.1474 |
+| 114.0   | 15.5  | 0.1193 | 103.4 | 7.1    | 0.1751 | 290.5   | 13.9       | 0.1447 |
+| 124.7   | 14.9  | 0.1087 | 104.4 | 7.6    | 0.1707 | 291.5   | 17.2       | 0.1453 |
+| 127.1   | 13.0  | 0.1097 | 115.2 | 10.1   | 0.1346 | 290.7   | 13.8       | 0.1342 |
+| 127.7   | 13.7  | 0.0920 | 116.7 | 9.9    | 0.1672 | 292.2   | 12.2       | 0.1193 |
+| 130.9   | 15.1  | 0.1242 | 117.7 | 10.1   | 0.1808 | 326.4   | 19.5       | 0.0821 |
+
+Analyse these data to determine in what way (if any) the growth patterns differ between the
+three species. Initially consider $t_m$ , the time to reach half the adult weight.
+
+
+# 2. Using R
+
+Refer to R section in week 7 lecture notes.
+

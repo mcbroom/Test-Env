@@ -43,6 +43,7 @@ trimmed.mean <- function(x, trim = 0.05){
   # Start with a check: You cannot trim more
   # than 50% of the data from each end!
   if(trim >= 0.5) stop("Trim proportion cannot be 50% or greater")
+  # Now weed out the trim = 0 case:
   if(trim == 0) stop("A 0% trimmed mean is just the mean. Try using the 'mean' function instead.")
   # Sort x to start:
   x <- sort(x)

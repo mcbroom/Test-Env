@@ -34,12 +34,16 @@ y <- x[-c(1:trim, (size - 0:(trim - 1)))]
 
 mean(y)
 
-## Now let's turn all that into a function:
+## Now let's turn all that into a function. Note that 0% is a special case,
+## and our approach above will not work for it. We will set it up as a check
+## condition that creates an informative error message if used. There are better
+## ways to go about this, but this will do for now:
 
 trimmed.mean <- function(x, trim = 0.05){
   # Start with a check: You cannot trim more
   # than 50% of the data from each end!
   if(trim >= 0.5) stop("Trim proportion cannot be 50% or greater")
+  if(trim == 0) stop("A 0% trimmed mean is just the mean. Try using the 'mean' function instead.")
   # Sort x to start:
   x <- sort(x)
   # Now find out the length of x for when we trim it:

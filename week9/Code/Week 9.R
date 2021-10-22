@@ -69,5 +69,7 @@ chemical.LSD <- LSD.test(weeds.aov, "chemical", console = T)
 
 # We investigated the main effects (despite there being a significant
 # interaction effect) to show you how you would look at main effects
-# in R if there was not a significant interaction.
+# in R if there was NOT a significant interaction. However, DO NOT DO
+# THIS IN PRACTICE!! IT IS INCORRECT TO INVESTIGATE MAIN EFFECTS WHEN
+# THERE IS A SIGNIFICANT INTERACTION!!!!!!!!!!!!!
 

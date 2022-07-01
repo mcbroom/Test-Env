@@ -7,3 +7,4 @@ dependencies:
   - r-learnr
   - r-plotly
   - r-mvtnorm
+  - r-shiny

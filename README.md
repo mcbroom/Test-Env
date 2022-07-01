@@ -13,3 +13,4 @@ Includes
 - learnr
 - plotly
 - mvtnorm
+- Shiny

@@ -16,7 +16,7 @@ options(width = 100)
 library(learnr)
 ```
 
-<p style="text-align: center;"><font size="+2">James McBroom - August 2021 </font></p>
+<p style="text-align: center;"><font size="+2">James McBroom</font></p>
 <center><a href="mailto:j.mcbroom@griffith.edu.au"><img src="./pictures/pi.jpg" width = "30" height = "30" alt="pi"></a></center>
 
 <br><br>
@@ -68,7 +68,7 @@ library(learnr)
 >
 > **Project Requirements for Week 7**
 >
-> - 12% Quiz on Friday 10th September 2021.
+> - 12% Quiz on Friday 9th September 2022.
 
 # 1. Statistical Models
 

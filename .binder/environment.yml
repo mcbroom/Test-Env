@@ -8,3 +8,4 @@ dependencies:
   - r-plotly
   - r-mvtnorm
   - r-shiny
+  - r-DiagrammeR

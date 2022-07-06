@@ -9,238 +9,303 @@ output:
     toc_float:
       collapsed: yes
 runtime: shiny_prerendered
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
+
 <!-- Make output window wider for R output so it doesn't split at columns at end -->
+
 ```{r set-options, echo=FALSE, cache=FALSE}
 options(width = 100)
 library(learnr)
 ```
 
-<p style="text-align: center;"><font size="+2">James McBroom - August 2021 </font></p>
-<center><a href="mailto:j.mcbroom@griffith.edu.au"><img src="./pictures/pi.jpg" width = "30" height = "30" alt="pi"></a></center>
+<p style="text-align: center;">
+
+<font size="+2">James McBroom</font>
+
+</p>
+
+<center>
+
+<a href="mailto:j.mcbroom@griffith.edu.au"><img src="./pictures/pi.jpg" alt="pi" width="30" height="30"/></a>
+
+</center>
 
 <br><br>
 
-
 > # Outline:
 >
-> 1. ***Hypothesis Testing – General Process***
+> 1.  ***Hypothesis Testing -- General Process***
 >
->  - The Concept
+> -   The Concept
 >
->  - The Basic Steps for Hypothesis Testing – 10 steps
+> -   The Basic Steps for Hypothesis Testing -- 10 steps
 >
->  - The Scientific Problem and Question
+> -   The Scientific Problem and Question
 >
->  - The Research Hypothesis
+> -   The Research Hypothesis
 >
->   - Resources, Required Detectable Differences, Significance Level Required
+> -   Resources, Required Detectable Differences, Significance Level
+>     Required
 >
->   - The Statistical Hypotheses
+> -   The Statistical Hypotheses
 >
->   - One and Two Tailed Hypotheses
+> -   One and Two Tailed Hypotheses
 >
->   - Theoretical Models used in Testing Hypotheses
+> -   Theoretical Models used in Testing Hypotheses
 >
->   - The Test Statistic, its Null Distribution, Significance Level and Critical Region
+> -   The Test Statistic, its Null Distribution, Significance Level and
+>     Critical Region
 >
->   - Sample Collection and Calculation of Sample Test Statistic
+> -   Sample Collection and Calculation of Sample Test Statistic
 >
->   - Comparison of Sample Test Statistic with Null Distribution
+> -   Comparison of Sample Test Statistic with Null Distribution
 >
->   - The $p$-Value of a Test
-> 
->   - Conclusions and Interpretation
+> -   The $p$-Value of a Test
 >
->   - Possible Errors
-> 
->   - Power of a Statistical Test
+> -   Conclusions and Interpretation
 >
-> 2. ***Specific Tests of Hypotheses I***
+> -   Possible Errors
 >
->   - Hypothesis Testing: The Proportion versus a Stated Value
+> -   Power of a Statistical Test
 >
->   - Hypothesis Testing: The Mean versus a Stated Value (One-sample t-test)
+> 2.  ***Specific Tests of Hypotheses I***
 >
->   - Hypothesis Testing: Difference Between Two Means I – Independent Samples
-(Two-Sample t-test)
+> -   Hypothesis Testing: The Proportion versus a Stated Value
 >
->   - Hypothesis Testing: Difference Between Two Means II –Paired Samples
-> 
+> -   Hypothesis Testing: The Mean versus a Stated Value (One-sample
+>     t-test)
 >
-> 3. ***Using R***
+> -   Hypothesis Testing: Difference Between Two Means I -- Independent
+>     Samples (Two-Sample t-test)
 >
->  - Functions for probability $Pr(X \leq x)$: `pnorm()`, `pt()`.
+> -   Hypothesis Testing: Difference Between Two Means II --Paired
+>     Samples
 >
->  - Calculating and Testing a Mean: The One-Sample t-test.
+> 3.  ***Using R***
 >
->  - Testing the Difference Between Two Means - The Two-Sample t-test.
+> -   Functions for probability $Pr(X \leq x)$: `pnorm()`, `pt()`.
 >
->  - The Paired t-test.
+> -   Calculating and Testing a Mean: The One-Sample t-test.
 >
+> -   Testing the Difference Between Two Means - The Two-Sample t-test.
+>
+> -   The Paired t-test.
 >
 > **Workshop for Week 5**
 >
->  There is no workshop in week 5, but you should be catching up on any week 4
->  workshop material you didn't get to, and trying the 
->  questions in your week 6 workshop now!
+> There is no workshop in week 5, but you should be catching up on any
+> week 4 workshop material you didn't get to, and trying the questions
+> in your week 6 workshop now!
 >
 > **Project Requirements for Weeks 5 & 6**
 >
-> - Try to use your project data to do some plots and numerical summaries etc.
->
+> -   Try to use your project data to do some plots and numerical
+>     summaries etc.
 >
 > **Things YOU must do in Week 5 & 6**
 >
-> - Revise and summarise the lecture notes for week 3 & 4;
+> -   Revise and summarise the lecture notes for week 3 & 4;
 >
-> - Read your week 5 & 6 lecture notes before the lecture.
+> -   Read your week 5 & 6 lecture notes before the lecture.
 
-
-# 1. Hypothesis Testing – The General Process
+# 1. Hypothesis Testing -- The General Process
 
 ## 1.1 The Concept
 
-The first area of statistical inference that we discuss involves using sample data to test
-some sort of belief. The second branch of statistical inference, estimation, will be
-discussed later.
+The first area of statistical inference that we discuss involves using
+sample data to test some sort of belief. The second branch of
+statistical inference, estimation, will be discussed later.
 
-Do the sample data support the claim made by the researcher? In such situations there are two main types of question:
+Do the sample data support the claim made by the researcher? In such
+situations there are two main types of question:
 
-1. Question asked is:
+1.  Question asked is:
 
 ***Is the value (parameter) as proposed?***
 
-- Is the proportion of males equal to 0.5?
-    
-- Is the standard deviation of leaf area greater than 10% of its mean?
-    
-- Is the maximum energy output greater than 10kw?
-    
-- Is the mean dissolved oxygen (DO) in the Brisbane river below the critical level for fish survival?
+-   Is the proportion of males equal to 0.5?
 
+-   Is the standard deviation of leaf area greater than 10% of its mean?
 
-2. Question asked is:
+-   Is the maximum energy output greater than 10kw?
+
+-   Is the mean dissolved oxygen (DO) in the Brisbane river below the
+    critical level for fish survival?
+
+2.  Question asked is:
 
 ***Are the parameters the same for different groups/situations/etc?***
 
-   - Is the mean level of NOX (nitrogen oxide) in the atmosphere increasing – time 1 versus time 2?
-   
-   - Is a particular grass species more tolerant to pressure from foot traffic than another grass species?
-   
-   - Is the average house loan through a particular bank the same this year as at the same time last?
+-   Is the mean level of NOX (nitrogen oxide) in the atmosphere
+    increasing -- time 1 versus time 2?
 
-## 1.2 The Basic Steps for Hypothesis Testing – the HT 10 steps
+-   Is a particular grass species more tolerant to pressure from foot
+    traffic than another grass species?
 
-1. Identify clearly the scientific problem and question.
+-   Is the average house loan through a particular bank the same this
+    year as at the same time last?
 
-2. From the identified question, clearly define the research hypothesis at issue.
+## 1.2 The Basic Steps for Hypothesis Testing -- the HT 10 steps
 
-3. Decide on the resources, required detectable difference and significance level.
+1.  Identify clearly the scientific problem and question.
 
-4. Formulate the statistical hypotheses: null and alternative.
+2.  From the identified question, clearly define the research hypothesis
+    at issue.
 
-5. Determine the theoretical model - based on null hypothesis and assumptions.
+3.  Decide on the resources, required detectable difference and
+    significance level.
 
-6. Identify the test statistic, its null distribution, and the relevant critical region.
+4.  Formulate the statistical hypotheses: null and alternative.
 
-7. Obtain the sample data and calculate the sample test statistic.
+5.  Determine the theoretical model - based on null hypothesis and
+    assumptions.
 
-8. Compare the sample test statistic with the null distribution using the critical region OR evaluate the p-value for the test.
+6.  Identify the test statistic, its null distribution, and the relevant
+    critical region.
 
-9. Make statistical conclusion and interpret result in terms of original question.
+7.  Obtain the sample data and calculate the sample test statistic.
+
+8.  Compare the sample test statistic with the null distribution using
+    the critical region OR evaluate the p-value for the test.
+
+9.  Make statistical conclusion and interpret result in terms of
+    original question.
 
 10. Consider the possible errors - type I, type II.
 
 ## 1.3 The Scientific Problem and Question
 
-It is the duty of the researcher to identify and explain the problem being studied.
-If this is not carried out with care improper, incorrect, and/or misleading conclusions may occur.
+It is the duty of the researcher to identify and explain the problem
+being studied. If this is not carried out with care improper, incorrect,
+and/or misleading conclusions may occur.
 
 ## 1.4 The Research Hypothesis
 
-- A specific belief about some feature of the population variable – eg a mean, proportion, range.
-- The feature will describe the variable in some way.
-- The feature must be measurable or observable	(not necessarily quantitative).
-- Also known as a scientific hypothesis or an English hypothesis.
-- Refers to a situation, problem, question.
+-   A specific belief about some feature of the population variable --
+    eg a mean, proportion, range.
+-   The feature will describe the variable in some way.
+-   The feature must be measurable or observable (not necessarily
+    quantitative).
+-   Also known as a scientific hypothesis or an English hypothesis.
+-   Refers to a situation, problem, question.
 
 Dictionary Definitions of the English word hypothesis
 
->Supposition made as basis for reasoning, without assumption of its truth, or as starting-point for investigation (The Concise Oxford Dictionary, 1975)
+> Supposition made as basis for reasoning, without assumption of its
+> truth, or as starting-point for investigation (The Concise Oxford
+> Dictionary, 1975)
 
->A proposition assumed as a premise in an argument;  a proposition (or set of propositions) proposed as an explanation for the occurrence of some specified group of phenomena, either asserted or merely as a provisional conjecture to guide investigation
-(Macquarie Concise Dictionary, 1996)
+> A proposition assumed as a premise in an argument; a proposition (or
+> set of propositions) proposed as an explanation for the occurrence of
+> some specified group of phenomena, either asserted or merely as a
+> provisional conjecture to guide investigation (Macquarie Concise
+> Dictionary, 1996)
 
-One of the most common problem areas in research design is inadequate clarification of the research hypothesis – it must be specific and unambiguous; it must be clear what is to be measured. What may seem obvious to the researcher at the time may be less than obvious to someone else, for example a research assistant actually collecting the data, and may be no longer obvious to anyone at a later date!
+One of the most common problem areas in research design is inadequate
+clarification of the research hypothesis -- it must be specific and
+unambiguous; it must be clear what is to be measured. What may seem
+obvious to the researcher at the time may be less than obvious to
+someone else, for example a research assistant actually collecting the
+data, and may be no longer obvious to anyone at a later date!
 
 **Example:**
 
 Decide whether each of the following is a good research hypothesis.
 
-1. 36% of Australian females between 15 and 24 years of age smoke cigarettes.
+1.  36% of Australian females between 15 and 24 years of age smoke
+    cigarettes.
 
-2. The probability that a cyclone first located in the Coral Sea will cross the Queensland coast is 0.20.
+2.  The probability that a cyclone first located in the Coral Sea will
+    cross the Queensland coast is 0.20.
 
-3. Budgerigars in inland Australia have a smaller range of body weights than do budgerigars on the coast.
+3.  Budgerigars in inland Australia have a smaller range of body weights
+    than do budgerigars on the coast.
 
-4. The minimum temperature in Brisbane never goes below 0$^{\circ}$C.
+4.  The minimum temperature in Brisbane never goes below 0$^{\circ}$C.
 
-5. The average Mastercard debt is \$600.
+5.  The average Mastercard debt is \$600.
 
-6. Toyota Corollas are better cars than Ford Lasers.
+6.  Toyota Corollas are better cars than Ford Lasers.
 
-7. Most people eat meat.
+7.  Most people eat meat.
 
-8. OPs in Private Schools cover a smaller range than OPs in State Schools.
+8.  OPs in Private Schools cover a smaller range than OPs in State
+    Schools.
 
-9. Five percent of women who take the contraceptive pill still fall pregnant.
+9.  Five percent of women who take the contraceptive pill still fall
+    pregnant.
 
-10. The average level of hydrocarbon concentration in body tissues increases up the food chain indicating an accumulation process.
+10. The average level of hydrocarbon concentration in body tissues
+    increases up the food chain indicating an accumulation process.
 
-11. The noise levels from the freeway are above the maximum decibel level set by the Australian standards.
+11. The noise levels from the freeway are above the maximum decibel
+    level set by the Australian standards.
 
 **Difficulties in defining the research hypothesis**
 
-The following are common difficulties encountered by researchers when they are attempting to define the research hypothesis.
-- Identifying the problem of interest
-- Defining the population
-- Identifying the specific question which is being asked
-- Stating the specific belief
+The following are common difficulties encountered by researchers when
+they are attempting to define the research hypothesis. - Identifying the
+problem of interest - Defining the population - Identifying the specific
+question which is being asked - Stating the specific belief
 
 **Remember, the feature describes the population variable**
 
-**Example:**
-Identify the variables, populations and research hypotheses for some of the examples given in the example above.
+**Example:** Identify the variables, populations and research hypotheses
+for some of the examples given in the example above.
 
 ## 1.5 Resources, Required Detectable Differences, Significance Level Required
 
-**Resources:** The resources that are available for the study need to be assessed at the beginning of the project and compared with the resources required to achieve the desired aim. If the two are not compatible, proceeding with the research may be a complete waste of time and money. Statistical input can help with this process, and ‘clever’ designs may enable research that would otherwise not be possible.
+**Resources:** The resources that are available for the study need to be
+assessed at the beginning of the project and compared with the resources
+required to achieve the desired aim. If the two are not compatible,
+proceeding with the research may be a complete waste of time and money.
+Statistical input can help with this process, and 'clever' designs may
+enable research that would otherwise not be possible.
 
-**Detectable Differences:** It is important to recognise the difference between ‘statistical difference’ and ‘observed difference’. For example, two sample means may have different values, but because of the variation associated with the measurement, it is not possible to say that they come from different populations – they are not statistically different. The researcher needs to think about the minimum difference he wishes to be able to detect – this will influence the size of the sample needed in the experimental design. It may also mean that the resources will not be sufficient; this will mean further thinking and maybe the decision not to go ahead with the study.
+**Detectable Differences:** It is important to recognise the difference
+between 'statistical difference' and 'observed difference'. For example,
+two sample means may have different values, but because of the variation
+associated with the measurement, it is not possible to say that they
+come from different populations -- they are not statistically different.
+The researcher needs to think about the minimum difference he wishes to
+be able to detect -- this will influence the size of the sample needed
+in the experimental design. It may also mean that the resources will not
+be sufficient; this will mean further thinking and maybe the decision
+not to go ahead with the study.
 
-**The Significance Level:** The chance the researcher is willing to take of incorrectly supporting the research hypothesis – usually designated by $\alpha$ (alpha).
-- Traditionally the level is set at 0.05 or 0.01, **why?**
-- The level depends on the situation.
-- 0.05 and 0.01 are like hair lengths, different people and/or problems require different reliabilities - be yourself!
-- The possible error if the conclusion is to reject the null hypothesis.
+**The Significance Level:** The chance the researcher is willing to take
+of incorrectly supporting the research hypothesis -- usually designated
+by $\alpha$ (alpha). - Traditionally the level is set at 0.05 or 0.01,
+**why?** - The level depends on the situation. - 0.05 and 0.01 are like
+hair lengths, different people and/or problems require different
+reliabilities - be yourself! - The possible error if the conclusion is
+to reject the null hypothesis.
 
 ## 1.6 The Statistical Hypotheses
 
-**The Alternative Hypothesis** – $H_1$ or $H_a$
+**The Alternative Hypothesis** -- $H_1$ or $H_a$
 
-- The ‘research’ hypothesis – possibly reformulated in statistical jargon.
-- The 'belief' we want to prove true.
-- The opposite of the null hypothesis.
-- By disproving the null, we say we have 'proved' the alternative.
-- Usually represented as H1 
+-   The 'research' hypothesis -- possibly reformulated in statistical
+    jargon.
+-   The 'belief' we want to prove true.
+-   The opposite of the null hypothesis.
+-   By disproving the null, we say we have 'proved' the alternative.
+-   Usually represented as H1
 
 **The Null Hypothesis** - $H_0$
 
-- Restatement of the research hypothesis in a form that is testable – usually involves negation.
-- Expresses the belief about the feature describing the variable in a way that is testable.
-- There must be a known theoretical model relating to the distribution of the feature OR a way of obtaining an empirical null distribution (resampling or bootstrapping).
-- Is true if and only if the alternative is false. We can never prove it true.
+-   Restatement of the research hypothesis in a form that is testable --
+    usually involves negation.
+-   Expresses the belief about the feature describing the variable in a
+    way that is testable.
+-   There must be a known theoretical model relating to the distribution
+    of the feature OR a way of obtaining an empirical null distribution
+    (resampling or bootstrapping).
+-   Is true if and only if the alternative is false. We can never prove
+    it true.
 
 **Hypotheses are statements about the population not about the sample.**
 
@@ -248,142 +313,191 @@ Identify the variables, populations and research hypotheses for some of the exam
 
 Where do the tails fit in?
 
-Tails play a significant (pun intended!) role in statistical inference – depends on question being asked.
+Tails play a significant (pun intended!) role in statistical inference
+-- depends on question being asked.
 
-**Two Tailed:**  
-Null contains:	    *equals*
+**Two Tailed:**\
+Null contains: *equals*
 
-Alternative contains:	    *not equals*
+Alternative contains: *not equals*
 
-**One Tailed:**   
-Null contains:                  *equals and greater than*   **OR** *equals and less than*
+**One Tailed:**\
+Null contains: *equals and greater than* **OR** *equals and less than*
 
-Alternative contains:	   *less than* **OR** *greater than*
+Alternative contains: *less than* **OR** *greater than*
 
 **Example:**
 
-A comparative study is to be carried out on the populations of fiddler crabs in the Tweed River and the Brisbane River. One aspect to be studied is the weight of an adult crab, a component of interest to a potential marketing venture. Write the hypotheses for the following:
+A comparative study is to be carried out on the populations of fiddler
+crabs in the Tweed River and the Brisbane River. One aspect to be
+studied is the weight of an adult crab, a component of interest to a
+potential marketing venture. Write the hypotheses for the following:
 
-1. Belief: crabs in the Tweed River have a different weight from those in the Brisbane River.
-
-<br><br><br><br><br><br>
-
-
-
-2. Belief: crabs in the Tweed River weigh more than those in the Brisbane River.
-
+1.  Belief: crabs in the Tweed River have a different weight from those
+    in the Brisbane River.
 
 <br><br><br><br><br><br>
 
-
-
-3. Belief: crabs in the Tweed River weigh less than those in the Brisbane River.
-
+2.  Belief: crabs in the Tweed River weigh more than those in the
+    Brisbane River.
 
 <br><br><br><br><br><br>
 
+3.  Belief: crabs in the Tweed River weigh less than those in the
+    Brisbane River.
 
-
+<br><br><br><br><br><br>
 
 ## 1.8 Theoretical Models used in Testing Hypotheses
 
-Theoretical models are used to specify the ***null distribution***, that is, the distribution of the test statistic **if the null hypothesis is true**.
+Theoretical models are used to specify the ***null distribution***, that
+is, the distribution of the test statistic **if the null hypothesis is
+true**.
 
-The model will depend on the measurement and on the feature of interest in the research hypothesis. For example:
+The model will depend on the measurement and on the feature of interest
+in the research hypothesis. For example:
 
-- A study involves a series of Bernoulli trials; feature of interest is a count or proportion - the theoretical model will be the Binomial;
-- If a continuous measurement such as weight is to be investigated and the mean is of interest - the Normal or t- distribution may be an appropriate model;
-- If the aim is to test the goodness of fit of some data to a specified distribution - the chi-squared model could be used.
+-   A study involves a series of Bernoulli trials; feature of interest
+    is a count or proportion - the theoretical model will be the
+    Binomial;
+-   If a continuous measurement such as weight is to be investigated and
+    the mean is of interest - the Normal or t- distribution may be an
+    appropriate model;
+-   If the aim is to test the goodness of fit of some data to a
+    specified distribution - the chi-squared model could be used.
 
-The feature of interest is usually converted to a *test statistic* which has a known distribution, assuming the null hypothesis is true (the Null Distribution).
+The feature of interest is usually converted to a *test statistic* which
+has a known distribution, assuming the null hypothesis is true (the Null
+Distribution).
 
-All theoretical models involve assumptions. Violations of these assumptions may or may not have a dramatic effect on the outcome of any inference undertaken. If you are ever in any doubts regarding assumptions and your data, consult a statistician for advice.
+All theoretical models involve assumptions. Violations of these
+assumptions may or may not have a dramatic effect on the outcome of any
+inference undertaken. If you are ever in any doubts regarding
+assumptions and your data, consult a statistician for advice.
 
 ## 1.9 The Test Statistic, its Null Distribution, Significance Level and Critical Region
 
 **The Test Statistic:**
 
-- Usually a function of the 'feature of interest’ and is known to have a particular distribution – this contributes to the ‘testability’ of the process.
+-   Usually a function of the 'feature of interest' and is known to have
+    a particular distribution -- this contributes to the 'testability'
+    of the process.
 
-- Should be something that has meaning in the context of the feature of interest – if you want to determine if two things are different, you might decide to look at their absolute difference, and include some sort of weighting – a difference of two has more impact if the values are near10 than if the values are near 1000
+-   Should be something that has meaning in the context of the feature
+    of interest -- if you want to determine if two things are different,
+    you might decide to look at their absolute difference, and include
+    some sort of weighting -- a difference of two has more impact if the
+    values are near10 than if the values are near 1000
 
-For example, when testing hypotheses about the population mean the equivalent Z score (or t- value if the standard deviation is estimated) becomes a test statistic.
+For example, when testing hypotheses about the population mean the
+equivalent Z score (or t- value if the standard deviation is estimated)
+becomes a test statistic.
 
 **The null distribution**
 
-- Is the probability distribution of the test statistic, assuming the null hypothesis is true.
-- If $H_0$ is true, this is the distribution we would expect the feature (or some expression based on it) to have. 
-- The distribution for the population of 'feature values' if H0 is true – eg, the distribution of the sample mean .
+-   Is the probability distribution of the test statistic, assuming the
+    null hypothesis is true.
+-   If $H_0$ is true, this is the distribution we would expect the
+    feature (or some expression based on it) to have.
+-   The distribution for the population of 'feature values' if H0 is
+    true -- eg, the distribution of the sample mean .
 
-**Significance Level – alpha, $\alpha$**
+**Significance Level -- alpha,** $\alpha$
 
-The risk you are willing to take that you will reject the null hypothesis when it is really true. The probability of a Type I error. It defines the ‘cut off’ point for the test statistic.
+The risk you are willing to take that you will reject the null
+hypothesis when it is really true. The probability of a Type I error. It
+defines the 'cut off' point for the test statistic.
 
 **Critical Region**
 
-- Determined by the specified significance level, $\alpha$
-- The region of the null distribution where it is considered unlikely for a value of the test statistic to occur.
-- If sample value lies here, it is regarded as evidence to reject $H_0$ in favour of $H_1$.
+-   Determined by the specified significance level, $\alpha$
+-   The region of the null distribution where it is considered unlikely
+    for a value of the test statistic to occur.
+-   If sample value lies here, it is regarded as evidence to reject
+    $H_0$ in favour of $H_1$.
 
-***The relationships of the test statistic to the sample and population are critical.***
+***The relationships of the test statistic to the sample and population
+are critical.***
 
 ## 1.10 Sample Collection and Calculation of Sample Test Statistic
 
-Ways of selecting the sample are discussed at length in various introductory texts. In general, samples should be random and representative of the population they are taken from. The test statistic is calculated as per the definition of whatever ‘meaningful’ feature has been selected, given the question asked and the available data – eg a count or a mean or a sum of deviations or …
-
+Ways of selecting the sample are discussed at length in various
+introductory texts. In general, samples should be random and
+representative of the population they are taken from. The test statistic
+is calculated as per the definition of whatever 'meaningful' feature has
+been selected, given the question asked and the available data -- eg a
+count or a mean or a sum of deviations or ...
 
 ## 1.11 Comparison of Sample Test Statistic with Null Distribution
 
-- The sample test statistic is calculated from the observed data and compared with the null distribution which reflects the population if $H_0$ is true.
-- If the sample test statistic lies in the ‘critical region’ the null hypothesis is rejected at the specified level of significance.
-- If it does not lie in the critical region the null hypothesis is not rejected – the data do not provide evidence to reject the null hypothesis in favour of the research (alternative) hypothesis. 
-
+-   The sample test statistic is calculated from the observed data and
+    compared with the null distribution which reflects the population if
+    $H_0$ is true.
+-   If the sample test statistic lies in the 'critical region' the null
+    hypothesis is rejected at the specified level of significance.
+-   If it does not lie in the critical region the null hypothesis is not
+    rejected -- the data do not provide evidence to reject the null
+    hypothesis in favour of the research (alternative) hypothesis.
 
 ## 1.12 The p-Value of a Test
 
-- Probability of observing a value of the test statistic **as extreme as, or more extreme than**, that seen in the sample.
-- Calculated from the null distribution.
-- Called the p-value for the sample test statistic
-- Is the probability of selecting a sample **at least as favourable to the research hypothesis** (alternative) as the observed sample.
-- It represents the **attained level of significance** for the test.
+-   Probability of observing a value of the test statistic **as extreme
+    as, or more extreme than**, that seen in the sample.
+-   Calculated from the null distribution.
+-   Called the p-value for the sample test statistic
+-   Is the probability of selecting a sample **at least as favourable to
+    the research hypothesis** (alternative) as the observed sample.
+-   It represents the **attained level of significance** for the test.
 
- 
-## 1.13 Conclusion and Interpretation 
+## 1.13 Conclusion and Interpretation
 
-- Depends on whether we reject or fail to reject the null hypothesis.
-- Remember, **failing to reject the null hypothesis does not mean the null hypothesis is true**
+-   Depends on whether we reject or fail to reject the null hypothesis.
+-   Remember, **failing to reject the null hypothesis does not mean the
+    null hypothesis is true**
 
 ## 1.14 Consider Possible Errors:
 
-Two basic types of error can occur whenever hypothesis testing is carried out. These are summarised in the following table:
+Two basic types of error can occur whenever hypothesis testing is
+carried out. These are summarised in the following table:
 
+|                |                      |          TRUE           |        SITUATION        |
+|:----------------|:----------------|:-----------------:|:------------------:|
+|                |                      |      $H_0$ is True      |     $H_0$ is False      |
+| **TEST**       | Fail to Reject $H_0$ |         Correct         | Type II Error ($\beta$) |
+| **CONCLUSION** | Reject $H_0$         | Type I Error ($\alpha$) |         Correct         |
 
-|            |                      |                    TRUE | SITUATION               |
-|:------------|:--------------------|:-----------------------:|:------------------------:|
-|            |                      |      $H_0$ is True      |      $H_0$ is False     |
-| **TEST**   | Fail to Reject $H_0$ |         Correct         | Type II Error ($\beta$) |
-| **CONCLUSION**|     Reject $H_0$     | Type I Error ($\alpha$) |         Correct         |
+The **LEVEL OF SIGNIFICANCE** is the probability of making a Type I
+error and is under the control of the person carrying out the
+statistical test. The symbol used is $\alpha$ (alpha).
 
-
-
-The **LEVEL OF SIGNIFICANCE** is the probability of making a Type I error and is under the
-control of the person carrying out the statistical test. The symbol used is $\alpha$ (alpha).
-
-The **PROBABILITY OF A TYPE II ERROR** depends on the true alternative hypothesis (and
-several other things) and is thus usually unknown. The symbol used is $\beta$ (beta).
+The **PROBABILITY OF A TYPE II ERROR** depends on the true alternative
+hypothesis (and several other things) and is thus usually unknown. The
+symbol used is $\beta$ (beta).
 
 ## 1.15 Power of a Statistical Test
 
-- The power of a statistical test is the probability of correctly rejecting the null hypothesis.
-- The probability of correctly detecting a valid alternative hypothesis.
-- Power is calculated as one minus the probability of a Type II error. Power   =   1 - $\beta$
-- A test with low power results in a higher chance of not rejecting the null hypothesis when it should in fact be rejected.
+-   The power of a statistical test is the probability of correctly
+    rejecting the null hypothesis.
+-   The probability of correctly detecting a valid alternative
+    hypothesis.
+-   Power is calculated as one minus the probability of a Type II error.
+    Power = 1 - $\beta$
+-   A test with low power results in a higher chance of not rejecting
+    the null hypothesis when it should in fact be rejected.
 
-For example, if we conclude that the null hypothesis: *equal numbers of males and females* cannot be rejected, then it may be that the test of proportion being used has a low power and we are simply not detecting the actual difference.
+For example, if we conclude that the null hypothesis: *equal numbers of
+males and females* cannot be rejected, then it may be that the test of
+proportion being used has a low power and we are simply not detecting
+the actual difference.
 
-This may be a case of no *statistical difference* when there is a *meaningful real difference*. 
+This may be a case of no *statistical difference* when there is a
+*meaningful real difference*.
 
-***Note: It is also possible to find a statistically significant difference that is not a scientifically significant or meaningful effect. Being a slave to p-values can lead you into trouble - there is no substitute for common sense and scientific knowledge. You should always ask yourself" "Does this result make sense?"***
+***Note: It is also possible to find a statistically significant
+difference that is not a scientifically significant or meaningful
+effect. Being a slave to p-values can lead you into trouble - there is
+no substitute for common sense and scientific knowledge. You should
+always ask yourself" "Does this result make sense?"***
 
 # 2. Specific Tests of Hypotheses I
 
@@ -393,49 +507,55 @@ See the week 3/4 lecture notes for theory, details and examples.
 
 Use binomial if sample size no more than 20.
 
-Use normal approximation for sample size > 20.
+Use normal approximation for sample size \> 20.
 
 ## 2.2 Hypothesis Testing: The Mean versus a Stated Value (The one-sample t-test)
 
-***Two-tailed hypotheses:***
-\begin{align*}
+***Two-tailed hypotheses:*** \begin{align*}
 H_0:  & \mu = \mu_0\\
 H_1:  & \mu \neq \mu_0
 \end{align*}
 
-***One-tailed Upper hypotheses:***
-\begin{align*}
+***One-tailed Upper hypotheses:*** \begin{align*}
 H_0:  & \mu \leq \mu_0\\
 H_1:  & \mu > \mu_0
 \end{align*}
 
-***One-tailed Lower hypotheses:***
-\begin{align*}
+***One-tailed Lower hypotheses:*** \begin{align*}
 H_0:  & \mu \geq\mu_0\\
 H_1:  & \mu < \mu_0
 \end{align*}
 
-Using theory: If $X \sim N(\mu, \sigma^2)$ then $\overline{X}_n \sim N(\mu, \frac{\sigma^2}{n})$. Applying the standard normal ($Z$) transform we get the test statistic:
+Using theory: If $X \sim N(\mu, \sigma^2)$ then
+$\overline{X}_n \sim N(\mu, \frac{\sigma^2}{n})$. Applying the standard
+normal ($Z$) transform we get the test statistic:
 
 $$
 T = \frac{\overline{X}_n - \mu_0}{\sigma/\sqrt{n}} \sim N(0, 1).
 $$
 
-Generally, however, we do not know the population standard deviation $\sigma$. Instead, we estimate it using the sample standard deviation $s$. Introducing this extra level of uncertainty into the test statistic changes the distribution of the test statistic to a Student's $t$:
+Generally, however, we do not know the population standard deviation
+$\sigma$. Instead, we estimate it using the sample standard deviation
+$s$. Introducing this extra level of uncertainty into the test statistic
+changes the distribution of the test statistic to a Student's $t$:
 
 $$
 T = \frac{\overline{X}_n - \mu_0}{s/\sqrt{n}} \sim t_{n-1}.
 $$
 
-The hypothesised value for $\mu$ ($\mu_0$) is substituted into the formula along with the values calculated from the sample – mean and standard deviation – to obtain the sample test statistic. The calculated sample test statistic is compared with the relevant critical value
-from the Student's $t$ distribution with $n-1$ degrees of freedom.
+The hypothesised value for $\mu$ ($\mu_0$) is substituted into the
+formula along with the values calculated from the sample -- mean and
+standard deviation -- to obtain the sample test statistic. The
+calculated sample test statistic is compared with the relevant critical
+value from the Student's $t$ distribution with $n-1$ degrees of freedom.
 
 ***Example***
 
 > **THE QUESTION:**
 >
-> Fiddler crabs in the Tweed River appear to be heavier than those reported in the
-> literature, where the mean weight is given as 230gm. Is this true?
+> Fiddler crabs in the Tweed River appear to be heavier than those
+> reported in the literature, where the mean weight is given as 230gm.
+> Is this true?
 >
 > **IDENTIFY A FEATURE WHICH WILL HAVE MEANING FOR THE QUESTION:**
 >
@@ -443,48 +563,61 @@ from the Student's $t$ distribution with $n-1$ degrees of freedom.
 >
 > **THE RESEARCH HYPOTHESIS:**
 >
-> The mean weight of fiddler crabs in the Tweed river is greater than 230gm.
+> The mean weight of fiddler crabs in the Tweed river is greater than
+> 230gm.
 >
-> **DETERMINE THE RESOURCES , DETECTABLE DIFFERENCE , LEVEL OF SIGNIFICANCE**
+> **DETERMINE THE RESOURCES , DETECTABLE DIFFERENCE , LEVEL OF
+> SIGNIFICANCE**
 >
-> Estimation of sample size for a given detectable difference is discussed in a later
-> section.
-> Assume for this example that a sample of 16 crabs will be taken.
+> Estimation of sample size for a given detectable difference is
+> discussed in a later section. Assume for this example that a sample of
+> 16 crabs will be taken.
 >
 > **STATISTICAL HYPOTHESES:**
-> 
-> \begin{align*}
-H_0:  & \mu \leq 230\\
-H_1:  & \mu > 230
-\end{align*}
 >
-> where $\mu$ is the population mean weight of fiddler crabs in the Tweed river.
+> ```{=tex}
+> \begin{align*}
+> H_0:  & \mu \leq 230\\
+> H_1:  & \mu > 230
+> \end{align*}
+> ```
+> where $\mu$ is the population mean weight of fiddler crabs in the
+> Tweed river.
 >
 > **DEDUCE A THEORETICAL MODEL FOR THE FEATURE:**
 >
-> Continuous data, possibly normal – a genetic & environmental derivation.
+> Continuous data, possibly normal -- a genetic & environmental
+> derivation.
 >
-> Interested in testing the mean – central limit theorem gives the distribution of the
-> sample mean as normal with mean $\mu$ and variance $\sigma^2/16$.
+> Interested in testing the mean -- central limit theorem gives the
+> distribution of the sample mean as normal with mean $\mu$ and variance
+> $\sigma^2/16$.
 >
-> Standard deviation, $\sigma$, is not known and will have to be estimated from the sample   using $s$. This means our null distribution is the Student's $t$ distribution.
+> Standard deviation, $\sigma$, is not known and will have to be
+> estimated from the sample using $s$. This means our null distribution
+> is the Student's $t$ distribution.
 >
 > **TEST STATISTIC , NULL DISTRIBUTION & CRITICAL REGION:**
 >
-> The mean of a random sample of size $n$ from a variable with a normal distribution
-> $N(\mu, \sigma^2)$ has a normal distribution $N(\mu, \sigma^2/n)$. Converting this to a 
-> $Z$ format, and acknowledging that the population standard deviation of the weights of 
+> The mean of a random sample of size $n$ from a variable with a normal
+> distribution $N(\mu, \sigma^2)$ has a normal distribution
+> $N(\mu, \sigma^2/n)$. Converting this to a $Z$ format, and
+> acknowledging that the population standard deviation of the weights of
 > crabs in the Tweed River is not known gives a test statistic:
 >
 > $$
-T = \frac{\overline{X}_n - \mu_0}{s/\sqrt{n}} \sim t_{n-1}.
-$$
+> T = \frac{\overline{X}_n - \mu_0}{s/\sqrt{n}} \sim t_{n-1}.
+> $$
 >
-> where $s$ is the estimated standard deviation calculated from the sample. This test
-> statistic has a $t$ distribution with $(n – 1)$ degrees of freedom if $H_0$ is true.
+> where $s$ is the estimated standard deviation calculated from the
+> sample. This test statistic has a $t$ distribution with $(n – 1)$
+> degrees of freedom if $H_0$ is true.
 >
-> Since a sample size of 16 has been proposed, the degrees of freedom will be 15 and the
-> critical region relevant for a level of significance of $\alpha = 0.05$ and a one-tailed   test ($H_1$ has a ‘greater than’ not a ‘not equals to’) is found from the $t$-table (see table at end of notes) to be: $t > 1.75$.
+> Since a sample size of 16 has been proposed, the degrees of freedom
+> will be 15 and the critical region relevant for a level of
+> significance of $\alpha = 0.05$ and a one-tailed test ($H_1$ has a
+> 'greater than' not a 'not equals to') is found from the $t$-table (see
+> table at end of notes) to be: $t > 1.75$.
 >
 > **COLLECT THE DATA:**
 >
@@ -492,13 +625,14 @@ $$
 >
 > **CALCULATE THE TEST STATISTIC:**
 >
-> Calculations on observations: sample mean $\overline{X} = 240$, and sample standard deviation $s= 24$.
+> Calculations on observations: sample mean $\overline{X} = 240$, and
+> sample standard deviation $s= 24$.
 >
 > Compute sample test statistic,
 >
 > $$
-T = \frac{240 - 230}{24/\sqrt{16}} = \frac{10}{6} = 1.667.
-$$
+> T = \frac{240 - 230}{24/\sqrt{16}} = \frac{10}{6} = 1.667.
+> $$
 >
 > **COMPARE THE TEST STATISTIC WITH THE NULL DISTRIBUTION:**
 >
@@ -507,64 +641,75 @@ $$
 > OR: What is the $p$ - value for $T$?
 >
 > R using:
-> 
+>
 > `1 - pt(1.6667, 15)`
 >
 > `[1] 0.05815621`
 >
-> The $p$-value for the calculated $T$ of 1.667 on 15 df is 0.058. (This is larger than 0.05.)
+> The $p$-value for the calculated $T$ of 1.667 on 15 df is 0.058. (This
+> is larger than 0.05.)
 >
 > **MAKE CONCLUSION AND INFERENCES:**
 >
-> There is insufficient evidence to reject the null hypothesis ($p \geq 0.05$). The sample data
-do not support the research hypothesis that the mean weight of crabs in the Tweed is
-greater than that reported in the literature (230gm), at the 0.05 level of significance.
-> 
-> **SPECIFY THE ERROR YOU MAY BE MAKING IN YOUR INFERENTIAL CONCLUSIONS:**
+> There is insufficient evidence to reject the null hypothesis
+> ($p \geq 0.05$). The sample data do not support the research
+> hypothesis that the mean weight of crabs in the Tweed is greater than
+> that reported in the literature (230gm), at the 0.05 level of
+> significance.
 >
-> The researcher may be incorrect in not rejecting the null hypothesis in favour of the
-research hypothesis – a type II error. The probability associated with this error is
-unknown unless the true alternative value of the mean weight for Tweed river crabs is
-known. The failure to reject the null may simply reflect a low powered test.
+> **SPECIFY THE ERROR YOU MAY BE MAKING IN YOUR INFERENTIAL
+> CONCLUSIONS:**
+>
+> The researcher may be incorrect in not rejecting the null hypothesis
+> in favour of the research hypothesis -- a type II error. The
+> probability associated with this error is unknown unless the true
+> alternative value of the mean weight for Tweed river crabs is known.
+> The failure to reject the null may simply reflect a low powered test.
 >
 > Question: What if the standard deviation for the sample had been 20?
 
+R: A one-sample t-test can be carried out using `t.test()` in R. See R
+section for details.
 
-R: A one-sample t-test can be carried out using `t.test()` in R. See R section for details.
+## 2.3 Hypothesis Testing: Difference Between Two Means I --Independent Samples (The two-sample t-test)
 
-## 2.3 Hypothesis Testing: Difference Between Two Means I –Independent Samples (The two-sample t-test)
-
-***Two-tailed hypotheses:***
-\begin{align*}
+***Two-tailed hypotheses:*** \begin{align*}
 H_0:  & \mu_1 = \mu_2\\
 H_1:  & \mu_1 \neq \mu_2
 \end{align*}
 
-where $\mu_1$ and $\mu_2$ are the respective means of the two populations to be compared.
+where $\mu_1$ and $\mu_2$ are the respective means of the two
+populations to be compared.
 
-***One-tailed Hypothesis:***
-\begin{align*}
+***One-tailed Hypothesis:*** \begin{align*}
 H_0:  & \mu_1 \leq \mu_2\\
 H_1:  & \mu_1 > \mu_2
 \end{align*}
 
 Or
 
-***One-tailed Hypothesis:***
-\begin{align*}
+***One-tailed Hypothesis:*** \begin{align*}
 H_0:  & \mu_1 \geq\mu_2\\
 H_1:  & \mu_1 < \mu_2
 \end{align*}
 
-***Note that in the two-sample t-test the tail of a one-tailed hypothesis test (upper or lower) depends on how you calculate the test statistic. This will be discussed in lectures.***
+***Note that in the two-sample t-test the tail of a one-tailed
+hypothesis test (upper or lower) depends on how you calculate the test
+statistic. This will be discussed in lectures.***
 
-Using theory: If $X_1 \sim N(\mu_1, \sigma_1^2)$ and $X_2 \sim N(\mu_2, \sigma_2^2)$ then $(\overline{X}_1 - \overline{X}_2) \sim N(\mu_1 - \mu_2, \sigma_{\overline{X}_1 - \overline{X}_2}^2)$.
+Using theory: If $X_1 \sim N(\mu_1, \sigma_1^2)$ and
+$X_2 \sim N(\mu_2, \sigma_2^2)$ then
+$(\overline{X}_1 - \overline{X}_2) \sim N(\mu_1 - \mu_2, \sigma_{\overline{X}_1 - \overline{X}_2}^2)$.
 
-The situation where $\sigma_1$ and $\sigma_2$ are known is most unlikely and will not be discussed.
+The situation where $\sigma_1$ and $\sigma_2$ are known is most unlikely
+and will not be discussed.
 
-The estimation of $\sigma_{\overline{X}_1 - \overline{X}_2}^2$ depends on whether or not $\sigma_1$ and $\sigma_2$ can be assumed equal.
+The estimation of $\sigma_{\overline{X}_1 - \overline{X}_2}^2$ depends
+on whether or not $\sigma_1$ and $\sigma_2$ can be assumed equal.
 
-Let $n_1$ and $n_2$ denote the sample sizes taken from populations 1 and 2, respectively. Let $s_1$ and $s_2$ denote the standard deviations of each sample taken from populations 1 and 2, respectively.
+Let $n_1$ and $n_2$ denote the sample sizes taken from populations 1 and
+2, respectively. Let $s_1$ and $s_2$ denote the standard deviations of
+each sample taken from populations 1 and 2, respectively.
 
 **Standard deviations unknown but assumed equal (Pooled Procedure)**
 
@@ -596,30 +741,34 @@ $$
 
 **NOTE:**
 
-- For large sample sizes, $T \sim Z$.
-- for small sample sizes, $T \sim t$ with weighted DF.
+-   For large sample sizes, $T \sim Z$.
+-   for small sample sizes, $T \sim t$ with weighted DF.
 
-In this course, the situation of unequal standard deviations and small samples will not be
-considered further.
+In this course, the situation of unequal standard deviations and small
+samples will not be considered further.
 
-***Question: Why would a test to compare means be of interest if populations have
-unequal standard deviations?***
+***Question: Why would a test to compare means be of interest if
+populations have unequal standard deviations?***
 
-The hypothesised value for $(\mu_1 - \mu_2)$ under $H_0$ is substituted into the formula along with the values
-calculated from the sample (means and standard deviations) to obtain sample test statistic. The calculated sample test statistic is compared with the relevant critical value of $t$.
+The hypothesised value for $(\mu_1 - \mu_2)$ under $H_0$ is substituted
+into the formula along with the values calculated from the sample (means
+and standard deviations) to obtain sample test statistic. The calculated
+sample test statistic is compared with the relevant critical value of
+$t$.
 
-**NOTE:** When comparing the means from two populations using the test statistic shown
-above, the choice of which sample mean is subtracted from the other is
-arbitrary. For two-tailed hypotheses this is not an issue. However, it can create
-an issue for one-tailed tests when deciding whether the test is upper or lower
-tailed. This will be discussed further in lectures.
+**NOTE:** When comparing the means from two populations using the test
+statistic shown above, the choice of which sample mean is subtracted
+from the other is arbitrary. For two-tailed hypotheses this is not an
+issue. However, it can create an issue for one-tailed tests when
+deciding whether the test is upper or lower tailed. This will be
+discussed further in lectures.
 
 ***Example***
 
 > **THE QUESTION:**
 >
-> Fiddler crabs in the Tweed River appear to be heavier than fiddler crabs in the
-Brisbane River. Is this true?
+> Fiddler crabs in the Tweed River appear to be heavier than fiddler
+> crabs in the Brisbane River. Is this true?
 >
 > **IDENTIFY A FEATURE WHICH WILL HAVE MEANING FOR THE QUESTION:**
 >
@@ -627,22 +776,27 @@ Brisbane River. Is this true?
 >
 > **THE RESEARCH HYPOTHESIS:**
 >
-> Mean weight for Tweed River crabs is greater than the mean weight for Brisbane River crabs.
+> Mean weight for Tweed River crabs is greater than the mean weight for
+> Brisbane River crabs.
 >
-> **DETERMINE THE RESOURCES , DETECTABLE DIFFERENCE , LEVEL OF SIGNIFICANCE**
+> **DETERMINE THE RESOURCES , DETECTABLE DIFFERENCE , LEVEL OF
+> SIGNIFICANCE**
 >
-> Sample size? Assume sample sizes of 16 and 25 have been taken from Tweed
-and Brisbane rivers respectively.
-Following tradition, take the level of significance to be $\alpha = 0.05$.
+> Sample size? Assume sample sizes of 16 and 25 have been taken from
+> Tweed and Brisbane rivers respectively. Following tradition, take the
+> level of significance to be $\alpha = 0.05$.
 >
 > **STATISTICAL HYPOTHESES:**
-> 
-> \begin{align*}
-H_0:  & \mu_{\text{T}} \leq \mu_{\text{B}}\\
-H_1:  & \mu_{\text{T}} > \mu_{\text{B}}
-\end{align*}
 >
-> where $\mu_{\text{T}}$ and $\mu_{\text{B}}$ are the population mean weights of fiddler crabs in the Tweed and Brisbane rivers, respectively.
+> ```{=tex}
+> \begin{align*}
+> H_0:  & \mu_{\text{T}} \leq \mu_{\text{B}}\\
+> H_1:  & \mu_{\text{T}} > \mu_{\text{B}}
+> \end{align*}
+> ```
+> where $\mu_{\text{T}}$ and $\mu_{\text{B}}$ are the population mean
+> weights of fiddler crabs in the Tweed and Brisbane rivers,
+> respectively.
 >
 > **DEDUCE A THEORETICAL MODEL FOR THE FEATURE:**
 >
@@ -652,27 +806,28 @@ H_1:  & \mu_{\text{T}} > \mu_{\text{B}}
 >
 > **TEST STATISTIC , NULL DISTRIBUTION & CRITICAL REGION:**
 >
-> The Test Statistic is:
->$$
-T = \frac{(\overline{X}_1 - \overline{X}_2) - (\mu_1 - \mu2)}{s_p \sqrt{\frac{1}{n_1} + \frac{1}{n_2}}} \sim t_{n_1 + n_2 -2} \text{ if } H_0 \text{ is true.}
-$$
+> The Test Statistic is: $$
+> T = \frac{(\overline{X}_1 - \overline{X}_2) - (\mu_1 - \mu2)}{s_p \sqrt{\frac{1}{n_1} + \frac{1}{n_2}}} \sim t_{n_1 + n_2 -2} \text{ if } H_0 \text{ is true.}
+> $$
 >
-> where
->$$
-s_p^2 = \frac{(n_1 - 1)s_1^2 + (n_2 - 1)s_2^2}{n_1 + n_2 - 2}.
-$$
+> where $$
+> s_p^2 = \frac{(n_1 - 1)s_1^2 + (n_2 - 1)s_2^2}{n_1 + n_2 - 2}.
+> $$
 >
 > Degrees of freedom = $16 + 25 - 2 = 39$.
 >
-> From $t$-tables, $t_{39}(0.95) = 1.69$ (or $-1.69$ - see discussion below).
+> From $t$-tables, $t_{39}(0.95) = 1.69$ (or $-1.69$ - see discussion
+> below).
 >
 > **COLLECT THE DATA:**
 >
-> Take a sample of 16 crabs from the Tweed river; take a sample of 25 crabs from the Brisbane river.
+> Take a sample of 16 crabs from the Tweed river; take a sample of 25
+> crabs from the Brisbane river.
 >
 > **CALCULATE THE TEST STATISTIC:**
 >
-> Using the sample crab weight data from each river, calculate means and std deviations:
+> Using the sample crab weight data from each river, calculate means and
+> std deviations:
 >
 > *Tweed:*
 >
@@ -682,16 +837,13 @@ $$
 >
 > mean = 215, standard deviation = 18, n = 25
 >
-> $s_p^2 =$  
+> $s_p^2 =$
 >
 > <br><br><br><br><br><br><br><br><br><br><br><br>
 >
+> $T =$
 >
->
-> $T =$ 
-> 
 > <br><br><br><br><br><br><br><br><br><br><br><br>
->
 
 ```{r checkt, exercise=TRUE}
 # CHECK HAND CALCULATIONS: Calculate Sp^2 and T using R:
@@ -713,64 +865,83 @@ round(T.stat, 3)
 > **MAKE CONCLUSION AND INFERENCES:**
 >
 > <br><br><br><br><br><br><br><br>
-> 
-> **SPECIFY THE ERROR YOU MAY BE MAKING IN YOUR INFERENTIAL CONCLUSIONS:**
+>
+> **SPECIFY THE ERROR YOU MAY BE MAKING IN YOUR INFERENTIAL
+> CONCLUSIONS:**
 >
 > <br><br><br>
 
+R: Two-sample t-tests can be carried out using `t.test()` - see Using R
+section.
 
-R: Two-sample t-tests can be carried out using `t.test()` - see Using R section.
+## 2.4 Hypothesis Testing: Difference Between Two Means I --Paired Samples (the Paired t-test)
 
-## 2.4 Hypothesis Testing: Difference Between Two Means I –Paired Samples (the Paired t-test)
+The same experimental unit is measured twice. E.g. Standing and lying
+down blood pressures. In these cases the data are not independent.
 
-The same experimental unit is measured twice. E.g. Standing and lying down blood pressures. In these cases the data are not independent.
-
-Here, we first calculate the ***difference*** between the two measures on each individual. Then we apply the one-sample t-test to the ***difference* variable.
+Here, we first calculate the ***difference*** between the two measures
+on each individual. Then we apply the one-sample t-test to the
+\*\**difference* variable.
 
 ***Example:***
 
-Twelve randomly selected individuals had their blood pressure measured in both standing and lying down positions. The data is given in the table below.
+Twelve randomly selected individuals had their blood pressure measured
+in both standing and lying down positions. The data is given in the
+table below.
 
 | Subject | Standing BP | Lying Down BP | Difference |
 |:-------:|:-----------:|:-------------:|:----------:|
-|    1    |     132     |      136      |      4     |
+|    1    |     132     |      136      |     4      |
 |    2    |     146     |      145      |     -1     |
-|    3    |     135     |      140      |      5     |
-|    4    |     141     |      147      |      6     |
-|    5    |     139     |      142      |      3     |
+|    3    |     135     |      140      |     5      |
+|    4    |     141     |      147      |     6      |
+|    5    |     139     |      142      |     3      |
 |    6    |     162     |      160      |     -2     |
-|    7    |     128     |      137      |      9     |
+|    7    |     128     |      137      |     9      |
 |    8    |     137     |      136      |     -1     |
-|    9    |     145     |      149      |      4     |
-|    10   |     151     |      158      |      7     |
-|    11   |     131     |      120      |     -11    |
-|    12   |     143     |      150      |      7     |
-|   Mean  |      --     |       --      |    2.50    |
-|    SD   |      --     |       --      |    5.50    |
+|    9    |     145     |      149      |     4      |
+|   10    |     151     |      158      |     7      |
+|   11    |     131     |      120      |    -11     |
+|   12    |     143     |      150      |     7      |
+|  Mean   |     --      |      --       |    2.50    |
+|   SD    |     --      |      --       |    5.50    |
 
 **Two-tailed Paired t-test**
 
-$H_0:$ There is no difference between the mean blood pressures in the two populations
+$H_0:$ There is no difference between the mean blood pressures in the
+two populations
 
-$H_1:$ There is a difference between the mean blood pressures in the two populations
+$H_1:$ There is a difference between the mean blood pressures in the two
+populations
 
-Since the two populations are paired (ie the same indivicuals are measured twice), we are actually testing the whether the population mean difference ($\mu_D$)is zero or not:
+Since the two populations are paired (ie the same indivicuals are
+measured twice), we are actually testing the whether the population mean
+difference ($\mu_D$)is zero or not:
 
+```{=tex}
 \begin{align*}
 H_0:  & \mu_{D} = 0 \\
 H_1:  & \mu_{D} \neq 0
 \end{align*}
+```
+This is just a one-sample t-test on the difference data: ie, use the
+difference data as the sample and caclulate its sample mean
+($\overline{X}_D$) and sample standard deviation ($s_D$). We can then
+use these in the one-sample t-test test statistic:
 
-This is just a one-sample t-test on the difference data: ie, use the difference data as the sample and caclulate its sample mean ($\overline{X}_D$) and sample standard deviation ($s_D$). We can then use these in the one-sample t-test test statistic:
-
+```{=tex}
 \begin{align*}
 T &= \frac{\overline{X}_n - \mu_0}{s/\sqrt{n}} \\
   &= \frac{\overline{X}_D - \mu_D}{s_D/\sqrt{n}} \\
   &= \frac{2.5 - 0}{5.5/\sqrt{12}} \\
   &= 1.574.
 \end{align*}
-
-From tables, $t_{11}(0.975) = \pm 2.2010$. Since $T = 1.574$ is not greater than 2.010 (or less than -2.010) we cannot reject the null at the 0.05 level of significance. We conclude there is insufficient evidence to suggest that the mean standing blood pressure differs from the mean lying blood pressure.
+```
+From tables, $t_{11}(0.975) = \pm 2.2010$. Since $T = 1.574$ is not
+greater than 2.010 (or less than -2.010) we cannot reject the null at
+the 0.05 level of significance. We conclude there is insufficient
+evidence to suggest that the mean standing blood pressure differs from
+the mean lying blood pressure.
 
 **One-tailed versions will be discussed during lectures**.
 
@@ -778,15 +949,17 @@ From tables, $t_{11}(0.975) = \pm 2.2010$. Since $T = 1.574$ is not greater than
 
 ## 3.1 More Probability Functions:
 
-Use the functions: `pnorm(z, mean, sd)` and `pt(t, df)` to find the cumulative probability
-for particular values of $Z$ and the calculated t-test statistic, $T$ based on Specified degrees
-of freedom (`df`).
+Use the functions: `pnorm(z, mean, sd)` and `pt(t, df)` to find the
+cumulative probability for particular values of $Z$ and the calculated
+t-test statistic, $T$ based on Specified degrees of freedom (`df`).
 
-**Eg:** An art auction produces normally distributed sale prices with a mean of 1600 dollars and a
-standard deviation of 220 dollars. What is the probability that a particular painting will cost at
-least 2000 dollars?
+**Eg:** An art auction produces normally distributed sale prices with a
+mean of 1600 dollars and a standard deviation of 220 dollars. What is
+the probability that a particular painting will cost at least 2000
+dollars?
 
-Let $X$ denote sales prices. We want to find $Pr(X > 2000) = 1 - Pr(X \leq 2000)$.
+Let $X$ denote sales prices. We want to find
+$Pr(X > 2000) = 1 - Pr(X \leq 2000)$.
 
 ```{r pnorm, exercise=TRUE}
 1 - pnorm(2000, mean = 1600, sd = 220)
@@ -797,26 +970,39 @@ z <- (2000 - 1600)/220
 1 - pnorm(z)
 ```
 
-(Exercise: Modify the above code to find the probability that a painting will cost 5000 dollars or less.)
+(Exercise: Modify the above code to find the probability that a painting
+will cost 5000 dollars or less.)
 
-Suppose now that the standard deviation given above had been estimated from a random sample of 10 of the paintings. Student's $t$ should be used (with df = 9) rather than the normal. Note you should convert the figure to  a Z-value first before using the `pt` function:
+Suppose now that the standard deviation given above had been estimated
+from a random sample of 10 of the paintings. Student's $t$ should be
+used (with df = 9) rather than the normal. Note you should convert the
+figure to a Z-value first before using the `pt` function:
 
 ```{r pt, exercise=TRUE}
 z <- (2000 - 1600)/220
 1 - pt(z, df = 9)
 ```
 
-## 3.2 Testing a Mean – The One-Sample t- test
+## 3.2 Testing a Mean -- The One-Sample t- test
 
 Use the `t.test()` function in R:
 
 `t.test(x, alternative, mu)`
 
-EG: Student's sleep data (1908) contain data on the extra amount of sleep gained (hours) from two types of soporific drug. Twenty patients were randomly assigned to either drug 1 or drug 2 (10 patients in each group) and their extra amount of sleep obtained was recorded. [NB: Actually the data are paired - 10 patients measured twice, but we are going to pretend they are independent groups of patients for the next two exercises].
+EG: Student's sleep data (1908) contain data on the extra amount of
+sleep gained (hours) from two types of soporific drug. Twenty patients
+were randomly assigned to either drug 1 or drug 2 (10 patients in each
+group) and their extra amount of sleep obtained was recorded. [NB:
+Actually the data are paired - 10 patients measured twice, but we are
+going to pretend they are independent groups of patients for the next
+two exercises].
 
-Let's test whether the mean amount of extra sleep is greater than 0 hours, across both groups. In other words, do both the drugs increase mean hours of sleep?
+Let's test whether the mean amount of extra sleep is greater than 0
+hours, across both groups. In other words, do both the drugs increase
+mean hours of sleep?
 
-The data are in R already, so we just need to use the `t.test()` function:
+The data are in R already, so we just need to use the `t.test()`
+function:
 
 ```{r 1-sample-t, exercise=TRUE}
 # Print out the data, note the variable names
@@ -827,13 +1013,18 @@ sleep
 t.test(sleep$extra, alternative = "greater", mu = 0)
 ```
 
-(Exercise: How would you modify the above code if you wanted to test whether the mean extra hours of sleep is significantly less than 1 hour?)
+(Exercise: How would you modify the above code if you wanted to test
+whether the mean extra hours of sleep is significantly less than 1
+hour?)
 
-## 3.3 Testing the Difference Between Two Means – The Two-Sample t-test
+## 3.3 Testing the Difference Between Two Means -- The Two-Sample t-test
 
 Again, we use the `t.test()` function in R to do two-sample t-tests.
 
-Suppose in the sleep example we want to test whether the mean extra hours of sleep differs between the two drugs. We simply do the two-sample t-test comparing the two groups (drugs) using the `t.test()` function:
+Suppose in the sleep example we want to test whether the mean extra
+hours of sleep differs between the two drugs. We simply do the
+two-sample t-test comparing the two groups (drugs) using the `t.test()`
+function:
 
 ```{r 2-sample-t, exercise=TRUE}
 
@@ -841,9 +1032,11 @@ Suppose in the sleep example we want to test whether the mean extra hours of sle
 t.test(extra ~ group, data = sleep)
 ```
 
-(Exercise: Investigate what R means when it says "Welch Two Sample t-test" in the output. Start by looking at the help for `t.test()` using `?t.test` in the R console).
+(Exercise: Investigate what R means when it says "Welch Two Sample
+t-test" in the output. Start by looking at the help for `t.test()` using
+`?t.test` in the R console).
 
-## 3.4 Testing the Mean Difference Between Paired Data – The Paired t- test
+## 3.4 Testing the Mean Difference Between Paired Data -- The Paired t- test
 
 Recall the blood pressure example. Enter the data and then do the test.
 
@@ -859,4 +1052,6 @@ t.test(lying.bp, standing.bp, paired = TRUE, alternative = "two.sided")
 diff <- lying.bp - standing.bp
 t.test(diff, alternative = "two.sided", mu = 0)
 ```
-(Exercise: Can you work out how to do a paired t-test on Student's sleep data? Remember, the data are actually paired.)
+
+(Exercise: Can you work out how to do a paired t-test on Student's sleep
+data? Remember, the data are actually paired.)

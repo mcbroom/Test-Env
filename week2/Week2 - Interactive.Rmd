@@ -4,7 +4,6 @@ output:
   html_document:
     code_folding: show
     includes:
-      after_body: footer.html
     toc: yes
     toc_depth: 5
     toc_float:

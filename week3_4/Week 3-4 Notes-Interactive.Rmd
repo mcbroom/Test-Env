@@ -217,8 +217,8 @@ $$
 
 For the dice example, the cumulative probability distribution can be calculated as follows:
 
-| $X$    | 1             | 2                                         | 3             | 4             | 5             | 6             |
-|--------|---------------|-------------------------------------------|---------------|---------------|---------------|---------------|
+| $X$    | 1             | 2           | 3             | 4             | 5             | 6             |
+|:--------|:---------------|:------------|:---------------|:---------------|:---------------|:---------------|
 | $f(x)$ | $\frac{1}{6}$ | $\frac{1}{6}$                             | $\frac{1}{6}$ | $\frac{1}{6}$ | $\frac{1}{6}$ | $\frac{1}{6}$ |
 | $F(x)$ | $\frac{1}{6}$ | $\frac{2}{6}$ | $\frac{3}{6}$ | $\frac{4}{6}$ | $\frac{5}{6}$ | $\frac{6}{6}$ |
 
@@ -624,9 +624,23 @@ children with type O blood, which we are told in the question is T = 2.
 The null distribution is the distribution of the test statistic assuming the null hypothesis is true.
 $T$ is binomial with $n=5$ and $p=0.25$. This distribution is shown here graphically:
 
-<center>
-![Null Distribution](pictures/bin-example2.png "Null Distribution")
-</center><br>
+```{r setup, include = FALSE}
+binom.barplot <- function(size, p = 0.5, 
+                          colour = "blue", 
+                          rounding = 5, 
+                          cex = 0.6){
+  x <- dbinom(0:size, size = size, p = p)
+  xx <- barplot(x, names.arg = 0:size, ylim = c(0, 1.1*max(x)))
+  text(xx, x, labels = round(x, rounding), pos = 3, col = colour, cex = cex)
+}
+
+```
+
+
+```{r bin1, exercise = T}
+binom.barplot(5, 0.25, colour = "blue", rounding = 4, cex = 0.7)
+title("Bin(n=5, p=0.25)")
+```
 
 Significance level $\alpha = 0.05$ (two-tailed = 0.025 either end). However, because this is a discrete
 distribution we may not be able to get exactly 0.05.
@@ -700,10 +714,10 @@ With our sample of 20 questions and 16 successes, do we hvae enough evidence to 
 **Null Distribution:** the distribution of the test statistic assuming the null hypothesis is true.
 This is a $\text{Bin}(20, 0.5)$ and is shown graphically below.
 
-<center>
-![Null Distribution](pictures/bin-example4.png "Null Distribution")
-</center><br>
-
+```{r bin2, exercise = T}
+binom.barplot(20, 0.5, colour = "blue", rounding = 4, cex = 0.4)
+title("Bin(n=20, p=0.5)")
+```
 
 Significance level $\alpha = 0.05$ (one tailed, all in the upper tail). Test statistic $T = 16$.
 
@@ -765,10 +779,14 @@ value with the largest probability, although this becomes prohibitive as $n$ get
 a formula to calculate the mode for the binomial distribution; however this goes beyond the
 scope of this course.)
 
-<center>
-![Binomial Distributions](pictures/bin-shape.png "Binomial Distributions")
-</center><br>
-
+```{r bins, exercise = T}
+par(mfrow = c(2, 1))
+binom.barplot(6, 0.2, colour = "blue", rounding = 3, cex = 0.7)
+title("Bin(n=6, p=0.2)")
+binom.barplot(15, 0.5, colour = "blue", rounding = 3, cex = 0.7)
+title("Bin(n=15, p=0.5)")
+par(mfrow = c(1, 1))
+```
 The probability of success, $p$, influences the shape of the binomial distribution. If $p=0.5$, the
 distribution is symmetric around its mode (second figure). If $p > 0.5$, the distribution has a left
 skew (not shown). If $p < 0.5$, the distribution has a right skew (first figure). The closer $p$ gets
@@ -907,9 +925,17 @@ You do not need to do these by hand. The R functions `qqnorm()` (and `qqline()` 
 reference line) do these for you. See the example R code in the week 1 lecture notes folder for
 an example of how to do these graphs. (Boxplots can be used to show similar things.)
 
-<center>
-![QQplot](pictures/qqplots.png "QQ Plots")
-</center><br>
+```{r qqplots, exercise = T}
+par(mfrow = c(2,2))
+x<-rnorm(1000)
+boxplot(x)
+hist(x, probability = T)
+hist(x, probability = T)
+lines(density(x), lwd = 2, col = "blue")
+qqnorm(x)
+qqline(x)
+par(mfrow = c(1, 1))
+```
 
 **Some Normal Notes**
 
